@@ -1,0 +1,259 @@
+1. use
+2. createCollection()
+3. insertOne()
+4. insertMany()
+5. find()
+6. findOne()
+7. $gt
+8. $lt
+9. $set
+10. updateOne()
+11. updateMany()
+12. deleteOne()
+13. deleteMany()
+14. sort()
+15. countDocuments()
+
+
+EXAMPLE -
+
+
+test> use practiceDB
+switched to db practiceDB
+practiceDB> show dbs
+admin   40.00 KiB
+config  72.00 KiB
+local   40.00 KiB
+practiceDB> db
+practiceDB
+practiceDB> use admin
+switched to db admin
+admin> show collections
+system.version
+admin> use practiceDB
+switched to db practiceDB
+practiceDB> db.createCollection("students")
+{ ok: 1 }
+practiceDB> show collections
+students
+practiceDB> db
+practiceDB
+practiceDB> show dbs
+admin       40.00 KiB
+config      96.00 KiB
+local       40.00 KiB
+practiceDB   8.00 KiB
+practiceDB> db.students.insertOne({name: "varun",dept : cse})
+ReferenceError: cse is not defined
+practiceDB> db.students.insertOne({name: "varun",dept : "cse"})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6a2baace60e06563a9abc114')
+}
+practiceDB> db.students
+practiceDB.students
+practiceDB> db.students.find()
+[
+  {
+    _id: ObjectId('6a2baace60e06563a9abc114'),
+    name: 'varun',
+    dept: 'cse'
+  }
+practiceDB> db.students.insertMany([{name : "doraemon",age : 10, dept : "robotics"},{name : "nobita" ,age : 12,dept : "ECE"}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a2bae7e60e06563a9abc115'),
+    '1': ObjectId('6a2bae7e60e06563a9abc116')
+  }
+}
+practiceDB> db.students.find()
+[
+  {
+    _id: ObjectId('6a2baace60e06563a9abc114'),
+    name: 'varun',
+    dept: 'cse'
+  },
+  {
+    _id: ObjectId('6a2bae7e60e06563a9abc115'),
+    name: 'doraemon',
+    age: 10,
+    dept: 'robotics'
+  },
+  {
+    _id: ObjectId('6a2bae7e60e06563a9abc116'),
+    name: 'nobita',
+    age: 12,
+    dept: 'ECE'
+  }
+]
+practiceDB> db.students.updateOne({name : 'varun'},{$set{dept : "Big data Analytics"}})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:44)
+
+> 1 | db.students.updateOne({name : 'varun'},{$set{dept : "Big data Analytics"}})
+    |                                             ^
+  2 |
+
+practiceDB> db.students.updateOne({name : 'varun'},{$set:{dept : "Big data Analytics"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+practiceDB> db.students.find()
+[
+  {
+    _id: ObjectId('6a2baace60e06563a9abc114'),
+    name: 'varun',
+    dept: 'Big data Analytics'
+  },
+  {
+    _id: ObjectId('6a2bae7e60e06563a9abc115'),
+    name: 'doraemon',
+    age: 10,
+    dept: 'robotics'
+  },
+  {
+    _id: ObjectId('6a2bae7e60e06563a9abc116'),
+
+practiceDB> use employeeDB
+switched to db employeeDB
+employeeDB> show dbs
+admin       40.00 KiB
+config      48.00 KiB
+local       40.00 KiB
+practiceDB  68.00 KiB
+employeeDB> use practiceDB
+switched to db practiceDB
+practiceDB> db.createCollection("employees")
+{ ok: 1 }
+practiceDB> db.employees.find()
+
+practiceDB> db.employees.insertOne({name : "varun",dept : "Admin",salary : 80000})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6a2bdbd560e06563a9abc117')
+}
+practiceDB> show dbs
+admin       40.00 KiB
+config      72.00 KiB
+local       40.00 KiB
+practiceDB  76.00 KiB
+practiceDB> show collections
+employees
+students
+practiceDB> db.insertMany([{name : "irfan",dept : "IT", salary : 90000},{name: "ram",dept : "HR",salary : "75000"}])
+TypeError: db.insertMany is not a function
+practiceDB> db.employees.insertMany([{name : "irfan",dept : "IT", salary : 90000},{name: "ram",dept : "HR",salary : "75000"}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a2bdd1360e06563a9abc118'),
+    '1': ObjectId('6a2bdd1360e06563a9abc119')
+  }
+}
+practiceDB> db.employees.find().pretty()
+[
+  {
+    _id: ObjectId('6a2bdbd560e06563a9abc117'),
+    name: 'varun',
+    dept: 'Admin',
+    salary: 80000
+  },
+  {
+    _id: ObjectId('6a2bdd1360e06563a9abc118'),
+    name: 'irfan',
+    dept: 'IT',
+    salary: 90000
+  },
+  {
+    _id: ObjectId('6a2bdd1360e06563a9abc119'),
+    name: 'ram',
+    dept: 'HR',
+    salary: '75000'
+  }
+]
+practiceDB> db.employees.updateOne({name : "irfan"},{$set:{salary : 95000}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+practiceDB> db.employees.find().pretty()
+[
+  {
+    _id: ObjectId('6a2bdbd560e06563a9abc117'),
+    name: 'varun',
+    dept: 'Admin',
+    salary: 80000
+  },
+  {
+    _id: ObjectId('6a2bdd1360e06563a9abc118'),
+    name: 'irfan',
+    dept: 'IT',
+    salary: 95000
+  },
+  {
+    _id: ObjectId('6a2bdd1360e06563a9abc119'),
+    name: 'ram',
+    dept: 'HR',
+    salary: '75000'
+  }
+]
+practiceDB> db.employees.deleteOne({name : "ram"})
+{ acknowledged: true, deletedCount: 1 }
+practiceDB> db.employees.find().pretty()
+[
+  {
+    _id: ObjectId('6a2bdbd560e06563a9abc117'),
+    name: 'varun',
+    dept: 'Admin',
+    salary: 80000
+  },
+  {
+    _id: ObjectId('6a2bdd1360e06563a9abc118'),
+    name: 'irfan',
+    dept: 'IT',
+    salary: 95000
+  }
+]
+practiceDB> db.employees.countDocuments()
+2
+practiceDB> db.employees.find().sort({salary})
+ReferenceError: salary is not defined
+practiceDB> db.employees.find().sort({salary:-1})
+[
+  {
+    _id: ObjectId('6a2bdd1360e06563a9abc118'),
+    name: 'irfan',
+    dept: 'IT',
+    salary: 95000
+  },
+  {
+    _id: ObjectId('6a2bdbd560e06563a9abc117'),
+    name: 'varun',
+    dept: 'Admin',
+    salary: 80000
+  }
+]
+practiceDB> db.employees.find().sort({salary:1})
+[
+  {
+    _id: ObjectId('6a2bdbd560e06563a9abc117'),
+    name: 'varun',
+    dept: 'Admin',
+    salary: 80000
+  },
+  {
+    _id: ObjectId('6a2bdd1360e06563a9abc118'),
+    name: 'irfan',
+    dept: 'IT',
+    salary: 95000
+  }
+]
+practiceDB>
