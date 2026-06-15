@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Manager</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f6f9;
+            display:flex;
+            justify-content:center;
+            margin-top:40px;
+        }
+
+        .container{
+            background:white;
+            padding:25px;
+            border-radius:12px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+            width:800px;
+        }
+
+        h2{
+            text-align:center;
+            color:#333;
+        }
+
+        input{
+            padding:10px;
+            margin:5px;
+            border:1px solid #ccc;
+            border-radius:6px;
+        }
+
+        .top{
+            text-align:center;
+        }
+
+        button{
+            padding:10px 15px;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        .addBtn{
+            background:#4CAF50;
+            color:white;
+        }
+
+        .editBtn{
+            background:#2196F3;
+            color:white;
+        }
+
+        .deleteBtn{
+            background:#f44336;
+            color:white;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+        }
+
+        th{
+            background:#4CAF50;
+            color:white;
+        }
+
+        th,td{
+            padding:12px;
+            border-bottom:1px solid #ddd;
+            text-align:center;
+        }
+
+        tr:hover{
+            background:#f1f1f1;
+        }
+
+        p{
+            font-weight:bold;
+            color:#444;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Student Manager</h2>
+    <div class="top">
+        <input type="text" id="name" placeholder="Name">
+        <input type="number" id="age" placeholder="Age">
+        <input type="text" id="course" placeholder="Course">
+        <button class="addBtn" onclick="saveStudent()" id="mainBtn">
+            Add
+        </button>
+    </div>
+    <p>Total Students: <span id="count">0</span></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Course</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="data"></tbody>
+    </table>
+</div>
+
+<script>
+let students = [];
+let edit = -1;
+function saveStudent(){
+    let name = document.getElementById("name").value;
+    let age = document.getElementById("age").value;
+    let course = document.getElementById("course").value;
+    if(name=="" || age=="" || course==""){
+        alert("Fill all fields");
+        return;
+    }
+    if(edit==-1){
+        students.push({name,age,course});
+    }
+    else{
+        students[edit] = {name,age,course};
+        edit = -1;
+        document.getElementById("mainBtn").innerText = "Add";
+    }
+
+    document.getElementById("name").value="";
+    document.getElementById("age").value="";
+    document.getElementById("course").value="";
+    showStudents();
+}
+function showStudents(){
+    let rows="";
+    for(let i=0;i<students.length;i++){
+        rows += `
+        <tr>
+            <td>${students[i].name}</td>
+            <td>${students[i].age}</td>
+            <td>${students[i].course}</td>
+            <td>
+                <button class="editBtn" onclick="editStudent(${i})">Edit</button>
+                <button class="deleteBtn" onclick="deleteStudent(${i})">Delete</button>
+            </td>
+        </tr>`;
+    }
+    document.getElementById("data").innerHTML = rows;
+    document.getElementById("count").innerText = students.length;
+}
+function editStudent(i){
+    document.getElementById("name").value = students[i].name;
+    document.getElementById("age").value = students[i].age;
+    document.getElementById("course").value = students[i].course;
+    edit = i;
+    document.getElementById("mainBtn").innerText = "Update";
+}
+function deleteStudent(i){
+    students.splice(i,1);
+    showStudents();
+}
+</script>
+
+</body>
+</html>
