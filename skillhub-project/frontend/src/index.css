@@ -248,6 +248,7 @@ textarea {
   border-radius: 8px;
 }
 
+.primary-btn,
 button[type="submit"] {
   padding: 12px 20px;
   border: none;
@@ -255,10 +256,80 @@ button[type="submit"] {
   color: white;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
 }
 
+.primary-btn:hover,
 button[type="submit"]:hover {
   background: #0056b3;
+}
+
+.secondary-btn {
+  padding: 12px 20px;
+  border: 2px solid #007bff;
+  background: white;
+  color: #007bff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.secondary-btn:hover {
+  background: #e6f0ff;
+}
+
+.button-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.loading-text,
+.empty-text {
+  margin-top: 16px;
+  color: #666;
+}
+
+.messages-list {
+  margin-top: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.message-item {
+  background: #f8fbff;
+  border: 1px solid #dfe7f3;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.message-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.message-header strong {
+  font-size: 1rem;
+}
+
+.message-header span {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.message-item p {
+  margin: 0 0 12px 0;
+  line-height: 1.6;
+  color: #333;
+}
+
+.message-item small {
+  display: block;
+  color: #777;
 }
 
 footer {

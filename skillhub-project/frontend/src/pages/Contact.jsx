@@ -9,6 +9,10 @@ function Contact() {
     message: ""
   });
 
+  const [messages, setMessages] = useState([]);
+  const [showMessages, setShowMessages] = useState(false);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+
   async function handleSubmit(e) {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
@@ -22,6 +26,19 @@ function Contact() {
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       toast.error("Failed To Send Message");
+    }
+  }
+
+  async function fetchMessages() {
+    setLoadingMessages(true);
+    try {
+      const response = await API.get("/contact");
+      setMessages(response.data);
+      setShowMessages(true);
+    } catch (error) {
+      toast.error("Failed to load messages");
+    } finally {
+      setLoadingMessages(false);
     }
   }
 
@@ -53,8 +70,38 @@ function Contact() {
         />
         <br />
         <br />
-        <button type="submit">Send Message</button>
+        <div className="button-row">
+          <button type="submit" className="primary-btn">Send Message</button>
+          <button
+            type="button"
+            className="secondary-btn"
+            onClick={() => (messages.length ? setShowMessages(!showMessages) : fetchMessages())}
+          >
+            {showMessages ? "Hide Messages" : "Show Messages"}
+          </button>
+        </div>
       </form>
+
+      {loadingMessages && <p className="loading-text">Loading messages...</p>}
+
+      {showMessages && (
+        <div className="messages-list">
+          {messages.length === 0 ? (
+            <p className="empty-text">No messages found.</p>
+          ) : (
+            messages.map((m) => (
+              <div key={m._id} className="message-item">
+                <div className="message-header">
+                  <strong>{m.name}</strong>
+                  <span>{m.email}</span>
+                </div>
+                <p>{m.message}</p>
+                <small>{new Date(m.createdAt).toLocaleString()}</small>
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }
